@@ -18,6 +18,11 @@ package eu.trentorise.smartcampus.social.model;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Container for {@link Group} list.
+ * @author raman
+ *
+ */
 public class Groups implements Serializable {
 
 	private static final long serialVersionUID = 319602647339550114L;

@@ -19,29 +19,30 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Container for {@link EntityType} list.
+ * Container for {@link Entity} list 
  * @author raman
  *
  */
-public class EntityTypes implements Serializable {
-	private static final long serialVersionUID = -2836039695780554750L;
-	
-	private List<EntityType> content;
+public class Entities implements Serializable {
 
-	public EntityTypes() {
+	private static final long serialVersionUID = 5744919364690321707L;
+
+	private List<Entity> content;
+
+	public Entities() {
 		super();
 	}
 
-	public EntityTypes(List<EntityType> content) {
+	public Entities(List<Entity> content) {
 		super();
 		this.content = content;
 	}
 
-	public List<EntityType> getContent() {
+	public List<Entity> getContent() {
 		return content;
 	}
 
-	public void setContent(List<EntityType> content) {
+	public void setContent(List<Entity> content) {
 		this.content = content;
 	}
 }

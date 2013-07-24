@@ -18,6 +18,12 @@ package eu.trentorise.smartcampus.social.model;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * User group descriptor. Uniquely identified with {@link #socialId} of the group. Contains the name and list
+ * of the {@link User} in {@link #users}.
+ * @author raman
+ *
+ */
 public class Group implements Serializable {
 
 	private static final long serialVersionUID = -8346644455435095887L;

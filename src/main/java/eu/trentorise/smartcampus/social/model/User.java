@@ -19,6 +19,7 @@ package eu.trentorise.smartcampus.social.model;
 
 /**
  * User descriptor object.
+ * Characterized by unique #id and {@link #socialId} and contains user name/surname.
  * @author raman
  *
  */

@@ -2,6 +2,12 @@ package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
 
+/**
+ * Entity type descriptor. Characterized by unique {@link #id}, {@link #name} of the type, and
+ * the corresponding semantic {@link #concept}.
+ * @author raman
+ *
+ */
 public class EntityType implements Serializable {
 	private static final long serialVersionUID = 6673762066376341027L;
 

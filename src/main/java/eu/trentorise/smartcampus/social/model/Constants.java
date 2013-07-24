@@ -16,6 +16,11 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+/**
+ * Type and ID constants for the social service
+ * @author raman
+ *
+ */
 public class Constants {
 
 	public static final String MY_PEOPLE_GROUP_ID = "-999";

@@ -18,6 +18,12 @@ package eu.trentorise.smartcampus.social.model;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Bean represents Community of users. Community is uniquely identified
+ * with id and is defined by the social id, name, description, and tags.
+ * @author raman
+ *
+ */
 public class Community implements Serializable {
 	private static final long serialVersionUID = -3806935282922229177L;
 

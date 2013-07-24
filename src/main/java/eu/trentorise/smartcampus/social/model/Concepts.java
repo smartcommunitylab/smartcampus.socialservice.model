@@ -18,26 +18,30 @@ package eu.trentorise.smartcampus.social.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class SharedContents implements Serializable {
+/**
+ * Container for {@link Concept} list.
+ * @author raman
+ *
+ */
+public class Concepts implements Serializable {
+	private static final long serialVersionUID = -3368601804764169323L;
 
-	private static final long serialVersionUID = 5744919364690321707L;
+	private List<Concept> content;
 
-	private List<SharedContent> content;
-
-	public SharedContents() {
+	public Concepts() {
 		super();
 	}
 
-	public SharedContents(List<SharedContent> content) {
+	public Concepts(List<Concept> content) {
 		super();
 		this.content = content;
 	}
 
-	public List<SharedContent> getContent() {
+	public List<Concept> getContent() {
 		return content;
 	}
 
-	public void setContent(List<SharedContent> content) {
+	public void setContent(List<Concept> content) {
 		this.content = content;
 	}
 }

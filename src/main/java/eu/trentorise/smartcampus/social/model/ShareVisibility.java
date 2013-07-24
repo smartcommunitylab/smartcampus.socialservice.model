@@ -18,6 +18,21 @@ package eu.trentorise.smartcampus.social.model;
 
 import java.util.List;
 
+/**
+ * Descriptor of {@link Entity} visibility. Definied with 
+ * <ul>
+ * <li>{@link #allCommunities} - visible to all communities.</li>
+ * <li>{@link #allUsers} - visible to all users (public).</li>
+ * <li>{@link #allKnownCommunities} - visible to all the communities of which the user is the member.</li>
+ * <li>{@link #allKnownUsers} - visible to all the members of the user's groups</li>
+ * <li>{@link #userIds} - explicit list of users that can 'see' the entity</li>
+ * <li>{@link #groupIds} - explicit list of groups which members can 'see' the entity</li>
+ * <li>{@link #communityIds} - explicit list of communities which members can 'see' the entity</li>
+</ul>
+ * 
+ * @author raman
+ *
+ */
 public class ShareVisibility {
 
 	private List<String> userIds;

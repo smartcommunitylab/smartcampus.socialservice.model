@@ -16,6 +16,13 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+/**
+ * Generic representation of the tag. May define textual tag or semantic tag. In the latter case 
+ * the {@link #id} field will correspond to the semantic concept id, while {@link #name}, {@link #description}, and {@link #setSummary(String)}
+ * will represent the label, description and summary of the concept respectively. 
+ * @author raman
+ *
+ */
 public class Concept {
 
 	private String id;
