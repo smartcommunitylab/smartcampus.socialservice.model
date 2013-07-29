@@ -16,7 +16,11 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Container for {@link Entity} list 
@@ -45,4 +49,47 @@ public class Entities implements Serializable {
 	public void setContent(List<Entity> content) {
 		this.content = content;
 	}
+	
+	/**
+	 * Convert to JSON format
+	 * @param entities
+	 * @return JSON string
+	 */
+	public static String toJson(Entities entities) {
+		if (entities == null) return null;
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("content") + ": [");
+			if (entities.getContent() != null) {
+				for (int i = 0; i < entities.getContent().size(); i++) {
+					writer.write(Entity.toJson(entities.getContent().get(i)));
+					if (i < entities.getContent().size() -1) {
+						writer.write(',');
+					}
+				} 
+			}
+			writer.write("]}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to {@link Entities} object
+	 * @param json
+	 * @return
+	 */
+	public static Entities toObject(String json) {
+		try {
+			JSONObject object = new JSONObject(json);
+			Entities obj = new Entities();
+			obj.setContent(Entity.toList(object.getString("content")));
+			return obj;
+		} catch (JSONException e) {
+			return new Entities();
+		}
+	}
+
 }

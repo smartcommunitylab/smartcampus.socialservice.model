@@ -16,7 +16,13 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * User group descriptor. Uniquely identified with {@link #socialId} of the group. Contains the name and list
@@ -56,4 +62,66 @@ public class Group implements Serializable {
 		this.socialId = id;
 	}
 
+	/**
+	 * Convert to JSON format
+	 * @param group
+	 * @return JSON string
+	 */
+	public static String toJson(Group group) {
+		if (group == null) return null;
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("socialId") + ":"
+					+ JsonUtils.toJson(group.getSocialId()) + ",");
+			writer.write(JSONObject.quote("name") + ":"
+					+ JsonUtils.toJson(group.getName()) + ",");
+			writer.write(JSONObject.quote("users") + ":"
+					+ User.toJson(group.getUsers()));
+			writer.write("}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON array string to the list of {@link Group} objects
+	 * @param string
+	 * @return
+	 */
+	public static List<Group> toList(String json) {
+		try {
+			JSONArray array = new JSONArray(json);
+			List<Group> listElements = new ArrayList<Group>();
+			for (int i = 0; array.optString(i).length() > 0; i++) {
+				String subElement = array.getString(i);
+				if (subElement != null) {
+					listElements.add(toObject(subElement));
+				}
+			}
+			return listElements;
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to {@link Group} object
+	 * @param json
+	 * @return
+	 */
+	public static Group toObject(String json) {
+		try {
+			JSONObject object = new JSONObject(json);
+			Group e = new Group();
+			e.setName(object.getString("name"));
+			e.setSocialId(object.getString("socialId"));
+			if (object.has("users"))
+				e.setUsers(User.toList(object.getString("users")));
+			return e;
+		} catch (JSONException e) {
+			return null;
+		}
+	}
 }

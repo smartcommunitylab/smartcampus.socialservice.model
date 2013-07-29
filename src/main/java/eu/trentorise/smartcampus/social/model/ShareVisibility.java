@@ -16,7 +16,11 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+import java.io.StringWriter;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Descriptor of {@link Entity} visibility. Definied with 
@@ -100,4 +104,113 @@ public class ShareVisibility {
 		this.allCommunities = allCommunities;
 	}
 
+	/**
+	 * Convert to JSON format
+	 * @param visibility
+	 * @return JSON string
+	 */
+	public static String toJson(ShareVisibility visibility) {
+		if (visibility == null) return null;
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("allUsers") + ":"
+					+ JsonUtils.toJson(visibility.isAllUsers()) + ",");
+			writer.write(JSONObject.quote("allCommunities") + ":"
+					+ JsonUtils.toJson(visibility.isAllCommunities()) + ",");
+			writer.write(JSONObject.quote("allKnownUsers") + ":"
+					+ JsonUtils.toJson(visibility.isAllKnownUsers()) + ",");
+			writer.write(JSONObject.quote("allKnownCommunities") + ":"
+					+ JsonUtils.toJson(visibility.isAllKnownCommunities()) + ",");
+			writer.write(JSONObject.quote("userIds") + ":"
+					+ JsonUtils.toJson(visibility.getUserIds()) + ",");
+			writer.write(JSONObject.quote("communityIds") + ":"
+					+ JsonUtils.toJson(visibility.getCommunityIds()) + ",");
+			writer.write(JSONObject.quote("groupIds") + ":"
+					+ JsonUtils.toJson(visibility.getGroupIds()));
+			writer.write("}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to {@link ShareVisibility} object
+	 * @param json
+	 * @return
+	 */
+	public static ShareVisibility toObject(String json) {
+		try {
+			JSONObject object = new JSONObject(json);
+			ShareVisibility e = new ShareVisibility();
+			e.setAllCommunities(object.getBoolean("allCommunities"));
+			e.setAllUsers(object.getBoolean("allUsers"));
+			e.setAllKnownCommunities(object.getBoolean("allKnownCommunities"));
+			e.setAllKnownUsers(object.getBoolean("allKnownUsers"));
+			if (object.has("userIds")) {
+				e.setUserIds(JsonUtils.convertJSONArray(object.getJSONArray("userIds"), String.class));
+			}
+			if (object.has("groupIds")) {
+				e.setGroupIds(JsonUtils.convertJSONArray(object.getJSONArray("groupIds"), String.class));
+			}
+			if (object.has("communityIds")) {
+				e.setUserIds(JsonUtils.convertJSONArray(object.getJSONArray("communityIds"), String.class));
+			}
+			return e;
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (allCommunities ? 1231 : 1237);
+		result = prime * result + (allKnownCommunities ? 1231 : 1237);
+		result = prime * result + (allKnownUsers ? 1231 : 1237);
+		result = prime * result + (allUsers ? 1231 : 1237);
+		result = prime * result
+				+ ((communityIds == null) ? 0 : communityIds.hashCode());
+		result = prime * result
+				+ ((groupIds == null) ? 0 : groupIds.hashCode());
+		result = prime * result + ((userIds == null) ? 0 : userIds.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ShareVisibility other = (ShareVisibility) obj;
+		if (allCommunities != other.allCommunities)
+			return false;
+		if (allKnownCommunities != other.allKnownCommunities)
+			return false;
+		if (allKnownUsers != other.allKnownUsers)
+			return false;
+		if (allUsers != other.allUsers)
+			return false;
+		if (communityIds == null) {
+			if (other.communityIds != null)
+				return false;
+		} else if (!communityIds.equals(other.communityIds))
+			return false;
+		if (groupIds == null) {
+			if (other.groupIds != null)
+				return false;
+		} else if (!groupIds.equals(other.groupIds))
+			return false;
+		if (userIds == null) {
+			if (other.userIds != null)
+				return false;
+		} else if (!userIds.equals(other.userIds))
+			return false;
+		return true;
+	}
 }

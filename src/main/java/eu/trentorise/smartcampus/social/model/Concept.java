@@ -16,6 +16,14 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Generic representation of the tag. May define textual tag or semantic tag. In the latter case 
  * the {@link #id} field will correspond to the semantic concept id, while {@link #name}, {@link #description}, and {@link #setSummary(String)}
@@ -69,5 +77,90 @@ public class Concept {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	/**
+	 * Convert JSON to {@link Concept}
+	 * @param string
+	 * @return
+	 */
+	public static Concept toObject(String json) {
+		try {
+			JSONObject object = new JSONObject(json);
+			Concept concept = new Concept();
+			concept.setId(object.getString("id"));
+			concept.setDescription(object.getString("description"));
+			concept.setName(object.getString("name"));
+			concept.setSummary(object.getString("summary"));
+			return concept;
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert to JSON format
+	 * @param tags
+	 * @return JSON string
+	 */
+	public static String toJson(List<Concept> tags) {
+		StringWriter writer = new StringWriter();
+		writer.write("[");
+		if (tags != null) {
+			for (int i = 0; i < tags.size(); i++) {
+				writer.write(Concept.toJson(tags.get(i)));
+				if (i < tags.size() -1) {
+					writer.write(',');
+				}
+			} 
+		}
+		writer.write("]");
+		return writer.toString();
+	}
+
+	/**
+	 * Convert to JSON format
+	 * @param c
+	 * @return JSON string
+	 */
+	public static String toJson(Concept c) {
+		if (c == null) return null;
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("id") + ":"
+					+ JsonUtils.toJson(c.getId()) + ",");
+			writer.write(JSONObject.quote("name") + ":"
+					+ JsonUtils.toJson(c.getName()) + ",");
+			writer.write(JSONObject.quote("description") + ":"
+					+ JsonUtils.toJson(c.getDescription()) + ",");
+			writer.write(JSONObject.quote("summary") + ":"
+					+ JsonUtils.toJson(c.getSummary()));
+			writer.write("}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to array of {@link Concept}
+	 * @param json
+	 * @return
+	 */
+	public static List<Concept> toList(String json) {
+		try {
+			JSONArray array = new JSONArray(json);
+			List<Concept> listElements = new ArrayList<Concept>();
+			for (int i = 0; array.optString(i).length() > 0; i++) {
+				String subElement = array.getString(i);
+				if (subElement != null) {
+					listElements.add(toObject(subElement));
+				}
+			}
+			return listElements;
+		} catch (JSONException e) {
+			return null;
+		}
 	}
 }

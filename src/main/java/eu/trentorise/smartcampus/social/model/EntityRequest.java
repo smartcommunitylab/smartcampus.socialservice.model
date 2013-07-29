@@ -1,7 +1,10 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.List;
+
+import org.json.JSONObject;
 
 /**
  * Object used as input for creating/updating an entity. Should contain
@@ -78,6 +81,36 @@ public class EntityRequest implements Serializable {
 
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
+	}
+
+	/**
+	 * @param entity
+	 * @return
+	 */
+	public static String toJson(EntityRequest entity) {
+		if (entity == null) return null;
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("id") + ":"
+					+ JsonUtils.toJson(entity.getId()) + ",");
+			writer.write(JSONObject.quote("name") + ":"
+					+ JsonUtils.toJson(entity.getName()) + ",");
+			writer.write(JSONObject.quote("tags") + ":"
+					+ Concept.toJson(entity.getTags()) + ",");
+			writer.write(JSONObject.quote("description") + ":"
+					+ JsonUtils.toJson(entity.getDescription()) + ",");
+			writer.write(JSONObject.quote("type") + ":"
+					+ JsonUtils.toJson(entity.getType()) + ",");
+			writer.write(JSONObject.quote("typeId") + ":"
+					+ JsonUtils.toJson(entity.getTypeId()) + ",");
+			writer.write(JSONObject.quote("relations") + ":"
+					+ JsonUtils.toJson(entity.getRelations()));
+			writer.write("}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

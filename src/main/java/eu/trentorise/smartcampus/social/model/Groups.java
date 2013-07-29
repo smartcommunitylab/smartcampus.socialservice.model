@@ -16,7 +16,11 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Container for {@link Group} list.
@@ -45,4 +49,41 @@ public class Groups implements Serializable {
 	public void setContent(List<Group> content) {
 		this.content = content;
 	}
+	
+	public static String toJson(Groups groups) {
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("content") + ": [");
+			if (groups.getContent() != null) {
+				for (int i = 0; i < groups.getContent().size(); i++) {
+					writer.write(Group.toJson(groups.getContent().get(i)));
+					if (i < groups.getContent().size() -1) {
+						writer.write(',');
+					}
+				} 
+			}
+			writer.write("]}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to {@link Groups} object
+	 * @param json
+	 * @return
+	 */
+	public static Groups toObject(String json) {
+		try {
+			JSONObject object = new JSONObject(json);
+			Groups groups = new Groups();
+			groups.setContent(Group.toList(object.getString("content")));
+			return groups;
+		} catch (JSONException e) {
+			return new Groups();
+		}
+	}
+
 }

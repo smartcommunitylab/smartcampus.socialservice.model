@@ -16,8 +16,13 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Data entity. Uniquely identified with the {@link #entityId} and characterized by
@@ -46,7 +51,7 @@ public class Entity implements Comparable<Entity>, Serializable {
 
 	private List<String> relations;
 	
-	private Date creationDate;
+	private Long creationDate;
 
 	private User user;
 
@@ -92,11 +97,11 @@ public class Entity implements Comparable<Entity>, Serializable {
 		this.ownerId = ownerId;
 	}
 
-	public Date getCreationDate() {
+	public Long getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Long creationDate) {
 		this.creationDate = creationDate;
 	}
 
@@ -136,5 +141,91 @@ public class Entity implements Comparable<Entity>, Serializable {
 
 	public void setRelations(List<String> relations) {
 		this.relations = relations;
+	}
+
+	/**
+	 * Convert to JSON format
+	 * @param entity
+	 * @return JSON string
+	 */
+	public static String toJson(Entity entity) {
+		if (entity == null) return null;
+		try {
+			StringWriter writer = new StringWriter();
+			writer.write("{");
+			writer.write(JSONObject.quote("entityiId") + ":"
+					+ JsonUtils.toJson(entity.getEntityId()) + ",");
+			writer.write(JSONObject.quote("entityType") + ":"
+					+ JsonUtils.toJson(entity.getEntityType()) + ",");
+			writer.write(JSONObject.quote("title") + ":"
+					+ JsonUtils.toJson(entity.getTags()) + ",");
+			writer.write(JSONObject.quote("description") + ":"
+					+ JsonUtils.toJson(entity.getDescription()) + ",");
+			writer.write(JSONObject.quote("ownerId") + ":"
+					+ JsonUtils.toJson(entity.getOwnerId()) + ",");
+			writer.write(JSONObject.quote("creationDate") + ":"
+					+ JsonUtils.toJson(entity.getCreationDate()) + ",");
+			writer.write(JSONObject.quote("user") + ":"
+					+ User.toJson(entity.getUser()) + ",");
+			writer.write(JSONObject.quote("relations") + ":"
+					+ JsonUtils.toJson(entity.getRelations()) + ",");
+			writer.write(JSONObject.quote("visibility") + ":"
+					+ ShareVisibility.toJson(entity.getVisibility()));
+			writer.write("}");
+			return writer.toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to array of {@link Entity}
+	 * @param json
+	 * @return
+	 */
+	public static List<Entity> toList(String json) {
+		try {
+			JSONArray array = new JSONArray(json);
+			List<Entity> listElements = new ArrayList<Entity>();
+			for (int i = 0; array.optString(i).length() > 0; i++) {
+				String subElement = array.getString(i);
+				if (subElement != null) {
+					listElements.add(toObject(subElement));
+				}
+			}
+			return listElements;
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Convert JSON string to {@link Entity} object
+	 * @param json
+	 * @return
+	 */
+	public static Entity toObject(String json) {
+		try {
+			JSONObject object = new JSONObject(json);
+			Entity e = new Entity();
+			e.setEntityId(object.getString("entityId"));
+			e.setEntityType(object.getString("entityType"));
+			e.setTitle(object.getString("title"));
+			e.setDescription(object.getString("description"));
+			e.setCreationDate(object.getLong("creationDate"));
+			e.setOwnerId(object.getString("ownerId"));
+			if (object.has("user"))
+				e.setUser(User.toObject(object.getString("user")));
+			if (object.has("visibility"))
+				e.setVisibility(ShareVisibility.toObject(object.getString("visibility")));
+			if (object.has("relations")) {
+				e.setRelations(JsonUtils.convertJSONArray(object.getJSONArray("relations"), String.class));
+			}
+			if (object.has("tags"))
+				e.setTags(Concept.toList(object.getString("tags")));
+			return e;
+		} catch (JSONException e) {
+			return null;
+		}
 	}
 }
