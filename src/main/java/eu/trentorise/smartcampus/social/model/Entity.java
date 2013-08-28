@@ -228,4 +228,45 @@ public class Entity implements Comparable<Entity>, Serializable {
 			return null;
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((entityId == null) ? 0 : entityId.hashCode());
+		result = prime * result
+				+ ((entityType == null) ? 0 : entityType.hashCode());
+		result = prime * result + ((ownerId == null) ? 0 : ownerId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Entity other = (Entity) obj;
+		if (entityId == null) {
+			if (other.entityId != null)
+				return false;
+		} else if (!entityId.equals(other.entityId))
+			return false;
+		if (entityType == null) {
+			if (other.entityType != null)
+				return false;
+		} else if (!entityType.equals(other.entityType))
+			return false;
+		if (ownerId == null) {
+			if (other.ownerId != null)
+				return false;
+		} else if (!ownerId.equals(other.ownerId))
+			return false;
+		return true;
+	}
+	
+	
 }

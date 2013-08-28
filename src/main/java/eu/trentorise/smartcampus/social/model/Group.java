@@ -124,4 +124,32 @@ public class Group implements Serializable {
 			return null;
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((socialId == null) ? 0 : socialId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Group other = (Group) obj;
+		if (socialId == null) {
+			if (other.socialId != null)
+				return false;
+		} else if (!socialId.equals(other.socialId))
+			return false;
+		return true;
+	}
+	
+	
 }

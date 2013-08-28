@@ -153,4 +153,28 @@ public class Community implements Serializable {
 			return null;
 		}
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Community other = (Community) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (socialId == null) {
+			if (other.socialId != null)
+				return false;
+		} else if (!socialId.equals(other.socialId))
+			return false;
+		return true;
+	}
+	
+	
 }
