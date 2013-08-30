@@ -16,13 +16,7 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Bean represents Community of users. Community is uniquely identified
@@ -78,80 +72,6 @@ public class Community implements Serializable {
 		result = prime * result
 				+ ((socialId == null) ? 0 : socialId.hashCode());
 		return result;
-	}
-
-	/**
-	 * Convert JSON string to {@link Community}
-	 * @param json
-	 * @return JSON string
-	 */
-	public static Community toObject(String json) {
-		try {
-			JSONObject object = new JSONObject(json);
-			Community comm = new Community();
-			comm.setId(object.getString("id"));
-			comm.setName(object.getString("name"));
-			comm.setSocialId(object.getString("socialId"));
-
-			boolean isNull = object.isNull("tags");
-			if (!isNull) {
-				List<Concept> elements = new ArrayList<Concept>();
-				for (int i = 0; object.getJSONArray("tags").optString(i)
-						.length() > 0; i++) {
-					elements.add(Concept.toObject(object.getJSONArray("tags").getString(i)));
-				}
-				comm.setTags(elements);
-			}
-			return comm;
-		} catch (JSONException e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Convert JSON string to array of {@link Community}
-	 * @param json
-	 * @return
-	 */
-	public static List<Community> toList(String json) {
-		try {
-			JSONArray array = new JSONArray(json);
-			List<Community> listElements = new ArrayList<Community>();
-			for (int i = 0; array.optString(i).length() > 0; i++) {
-				String subElement = array.getString(i);
-				if (subElement != null) {
-					listElements.add(toObject(subElement));
-				}
-			}
-			return listElements;
-		} catch (JSONException e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Convert to JSON format
-	 * @param c
-	 * @return JSON string
-	 */
-	public static String toJson(Community c) {
-		if (c == null) return null;
-		try {
-			StringWriter writer = new StringWriter();
-			writer.write("{");
-			writer.write(JSONObject.quote("id") + ":"
-					+ JsonUtils.toJson(c.getId()) + ",");
-			writer.write(JSONObject.quote("name") + ":"
-					+ JsonUtils.toJson(c.getName()) + ",");
-			writer.write(JSONObject.quote("tags") + ":"
-					+ Concept.toJson(c.getTags()) + ",");
-			writer.write(JSONObject.quote("socialId") + ":"
-					+ JsonUtils.toJson(c.getSocialId()));
-			writer.write("}");
-			return writer.toString();
-		} catch (Exception e) {
-			return null;
-		}
 	}
 
 	@Override

@@ -1,13 +1,6 @@
 package eu.trentorise.smartcampus.social.model;
 
 import java.io.Serializable;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Entity type descriptor. Characterized by unique {@link #id}, {@link #name} of the type, and
@@ -44,68 +37,6 @@ public class EntityType implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	/**
-	 * Convert to JSON format
-	 * @param entityType
-	 * @return JSON string
-	 */
-	public static String toJson(EntityType entityType) {
-		if (entityType == null) return null;
-		try {
-			StringWriter writer = new StringWriter();
-			writer.write("{");
-			writer.write(JSONObject.quote("id") + ":"
-					+ JsonUtils.toJson(entityType.getId()) + ",");
-			writer.write(JSONObject.quote("name") + ":"
-					+ JsonUtils.toJson(entityType.getName()) + ",");
-			writer.write(JSONObject.quote("concept") + ":"
-					+ Concept.toJson(entityType.getConcept()));
-			writer.write("}");
-			return writer.toString();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Convert JSON string to array of {@link EntityType}
-	 * @param json
-	 * @return
-	 */
-	public static List<EntityType> toList(String json) {
-		try {
-			JSONArray array = new JSONArray(json);
-			List<EntityType> listElements = new ArrayList<EntityType>();
-			for (int i = 0; array.optString(i).length() > 0; i++) {
-				String subElement = array.getString(i);
-				if (subElement != null) {
-					listElements.add(toObject(subElement));
-				}
-			}
-			return listElements;
-		} catch (JSONException e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Convert JSON string to {@link EntityType} object
-	 * @param json
-	 * @return
-	 */
-	public static EntityType toObject(String json) {
-		try {
-			JSONObject object = new JSONObject(json);
-			EntityType e = new EntityType();
-			e.setId(object.getString("id"));
-			e.setName(object.getString("name"));
-			e.setConcept(Concept.toObject(object.getString("concept")));
-			return e;
-		} catch (JSONException e) {
-			return null;
-		}
 	}
 
 	@Override

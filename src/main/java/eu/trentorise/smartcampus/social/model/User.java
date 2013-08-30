@@ -16,13 +16,6 @@
 
 package eu.trentorise.smartcampus.social.model;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 /**
@@ -61,86 +54,6 @@ public class User {
 	}
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-	/**
-	 * Convert to JSON format
-	 * @param user 
-	 * @return JSON string
-	 */
-	public static String toJson(User user) {
-		if (user == null) return null;
-		try {
-			StringWriter writer = new StringWriter();
-			writer.write("{");
-			writer.write(JSONObject.quote("id") + ":"
-					+ JsonUtils.toJson(user.getId()) + ",");
-			writer.write(JSONObject.quote("socialId") + ":"
-					+ JsonUtils.toJson(user.getSocialId()) + ",");
-			writer.write(JSONObject.quote("name") + ":"
-					+ JsonUtils.toJson(user.getName()) + ",");
-			writer.write(JSONObject.quote("surname") + ":"
-					+ JsonUtils.toJson(user.getSurname()));
-			writer.write("}");
-			return writer.toString();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	/**
-	 * @param users
-	 * @return
-	 */
-	public static String toJson(List<User> users) {
-		StringWriter writer = new StringWriter();
-		writer.write("[");
-		if (users != null) {
-			for (int i = 0; i < users.size(); i++) {
-				writer.write(User.toJson(users.get(i)));
-				if (i < users.size() -1) {
-					writer.write(',');
-				}
-			} 
-		}
-		writer.write("]");
-		return writer.toString();
-	}
-	/**
-	 * Convert JSON to {@link User}
-	 * @param json
-	 * @return
-	 */
-	public static User toObject(String json) {
-		try {
-			JSONObject object = new JSONObject(json);
-			User user = new User();
-			user.setId(object.getString("id"));
-			user.setSocialId(object.getString("socialId"));
-			user.setName(object.getString("name"));
-			user.setSurname(object.getString("surname"));
-			return user;
-		} catch (JSONException e) {
-			return null;
-		}
-	}
-	/**
-	 * Convert JSON string to array of {@link User}
-	 * @param json
-	 * @return
-	 */
-	public static List<User> toList(String json) {
-		try {
-			JSONArray array = new JSONArray(json);
-			List<User> listElements = new ArrayList<User>();
-			for (int i = 0; array.optString(i).length() > 0; i++) {
-				String subElement = array.getString(i);
-				if (subElement != null) {
-					listElements.add(toObject(subElement));
-				}
-			}
-			return listElements;
-		} catch (JSONException e) {
-			return null;
-		}
 	}
 	@Override
 	public int hashCode() {
