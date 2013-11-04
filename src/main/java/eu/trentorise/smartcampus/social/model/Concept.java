@@ -16,6 +16,8 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+import java.io.Serializable;
+
 
 /**
  * Generic representation of the tag. May define textual tag or semantic tag. In the latter case 
@@ -24,7 +26,8 @@ package eu.trentorise.smartcampus.social.model;
  * @author raman
  *
  */
-public class Concept {
+public class Concept implements Serializable {
+	private static final long serialVersionUID = -5336319375263642193L;
 
 	private String id;
 	private String name;

@@ -16,6 +16,8 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+import java.io.Serializable;
+
 
 
 /**
@@ -24,7 +26,8 @@ package eu.trentorise.smartcampus.social.model;
  * @author raman
  *
  */
-public class User {
+public class User implements Serializable {
+	private static final long serialVersionUID = 6835741086114666668L;
 
 	private String id;
 	private String socialId;

@@ -16,6 +16,7 @@
 
 package eu.trentorise.smartcampus.social.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -33,8 +34,9 @@ import java.util.List;
  * @author raman
  *
  */
-public class ShareVisibility {
-
+public class ShareVisibility implements Serializable {
+	private static final long serialVersionUID = 4165148480337737527L;
+	
 	private List<String> userIds;
 	private List<String> groupIds;
 	private List<String> communityIds;
